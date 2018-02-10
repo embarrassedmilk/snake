@@ -1,4 +1,11 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore;
+using Snake.Core;
+using Snake.Extensions;
+using System.Reflection;
 
 namespace snake_runner
 {
@@ -6,7 +13,11 @@ namespace snake_runner
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            SnakeWebHostBuilder<SnakeSettings>
+                .CreateDefaultBuilder(args)
+                .WithMvc()
+                .Build("appsettings.json", typeof(Program).GetTypeInfo().Assembly.FullName)
+                .Run();
         }
     }
 }
