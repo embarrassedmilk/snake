@@ -16,6 +16,7 @@ namespace snake_runner
             SnakeWebHostBuilder<SnakeSettings>
                 .CreateDefaultBuilder(args)
                 .WithMvc()
+                .WithSwagger("Dont touch my bread, government")
                 .Build("appsettings.json", typeof(Program).GetTypeInfo().Assembly.FullName)
                 .Run();
         }
