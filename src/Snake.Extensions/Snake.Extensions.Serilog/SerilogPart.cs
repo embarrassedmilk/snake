@@ -8,20 +8,17 @@ namespace Snake.Extensions.Serilog
 {
     public static class SerilogPartExtension
     {
-        public static ISnakeWebhostBuilder WithSerilog(this ISnakeWebhostBuilder snakeWebhostBuilder)
+        public static ISnakeWebhostBuilder WithSerilog(this ISnakeWebhostBuilder snakeWebhostBuilder, LoggerConfiguration loggerConfiguration)
         {
-            return snakeWebhostBuilder.With(() => new SerilogPart());
+            return snakeWebhostBuilder.With(() => new SerilogPart(loggerConfiguration));
         } 
     }
 
     public class SerilogPart : ISnakePart
     {
-        public SerilogPart()
+        public SerilogPart(LoggerConfiguration loggerConfiguration)
         {
-            Log.Logger = new LoggerConfiguration()
-              .Enrich.FromLogContext()
-              .WriteTo.Console()
-              .CreateLogger();
+            Log.Logger = loggerConfiguration.CreateLogger();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -31,7 +28,7 @@ namespace Snake.Extensions.Serilog
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddLogging(loggingBuilder =>  loggingBuilder.AddSerilog(dispose: true));
+            services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
         }
     }
 }
