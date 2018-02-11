@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "snake-core", "snake-core\snake-core.csproj", "{623CBB38-1F55-41E3-9C54-9AB699B497C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snake.Core", "src\Snake.Core\Snake.Core.csproj", "{623CBB38-1F55-41E3-9C54-9AB699B497C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "snake-runner", "snake-runner\snake-runner.csproj", "{7BE5A213-E966-45BF-A148-02CCD2A4726C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snake.Runner", "src\Snake.Runner\Snake.Runner.csproj", "{7BE5A213-E966-45BF-A148-02CCD2A4726C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

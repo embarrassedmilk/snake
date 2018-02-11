@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\snake-core\snake-core.csproj" />
+    <ProjectReference Include="..\Snake.Core\Snake.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
