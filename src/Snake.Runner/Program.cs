@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore;
 using Snake.Core;
 using Snake.Extensions;
 using System.Reflection;
+using Snake.Extensions.Serilog;
 
 namespace snake_runner
 {
@@ -16,6 +14,7 @@ namespace snake_runner
             SnakeWebHostBuilder<SnakeSettings>
                 .CreateDefaultBuilder(args)
                 .WithMvc()
+                .WithSerilog()
                 .WithSwagger("Dont touch my bread, government")
                 .Build("appsettings.json", typeof(Program).GetTypeInfo().Assembly.FullName)
                 .Run();
