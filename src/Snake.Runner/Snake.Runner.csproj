@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Snake.Core\Snake.Core.csproj" />
+    <ProjectReference Include="..\Snake.Extensions\Snake.Extensions.Autofac\Snake.Extensions.Autofac.csproj" />
     <ProjectReference Include="..\Snake.Extensions\Snake.Extensions.Mvc\Snake.Extensions.Mvc.csproj" />
     <ProjectReference Include="..\Snake.Extensions\Snake.Extensions.Serilog\Snake.Extensions.Serilog.csproj" />
     <ProjectReference Include="..\Snake.Extensions\Snake.Extensions.Swagger\Snake.Extensions.Swagger.csproj" />

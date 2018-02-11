@@ -3,15 +3,17 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Snake.Core;
 using Swashbuckle.AspNetCore.Swagger;
+using System.Collections.Generic;
 
-namespace Snake.Extensions {
+namespace Snake.Extensions.Swagger
+{
     public static class SwaggerExtension {
         public static ISnakeWebhostBuilder WithSwagger(this ISnakeWebhostBuilder builder, string appName) {
             return builder.With(() => new SwaggerPart(appName));
         }
     }
 
-    public class SwaggerPart : ISnakePart
+    public class SwaggerPart : IApplicationPlugin
     {
         private readonly string _appName;
 
@@ -34,5 +36,7 @@ namespace Snake.Extensions {
                     {
                         c.SwaggerDoc("v1", new Info { Title = _appName, Version = "v1" });
                     });
+
+        public void BeforeBuild(IApplicationBuilder app, IHostingEnvironment env, IEnumerable<ServiceDescriptor> services) { }
     }
 }

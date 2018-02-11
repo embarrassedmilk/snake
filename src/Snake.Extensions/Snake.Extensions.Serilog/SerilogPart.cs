@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Snake.Core;
+using System.Collections.Generic;
 
 namespace Snake.Extensions.Serilog
 {
@@ -14,7 +15,7 @@ namespace Snake.Extensions.Serilog
         } 
     }
 
-    public class SerilogPart : ISnakePart
+    public class SerilogPart : IApplicationPlugin
     {
         public SerilogPart(LoggerConfiguration loggerConfiguration)
         {
@@ -30,5 +31,7 @@ namespace Snake.Extensions.Serilog
         {
             services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
         }
+
+        public void BeforeBuild(IApplicationBuilder app, IHostingEnvironment env, IEnumerable<ServiceDescriptor> services) { }
     }
 }

@@ -2,8 +2,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Snake.Core;
+using System.Collections.Generic;
 
-namespace Snake.Extensions
+namespace Snake.Extensions.Mvc
 {
     public static class MvcExtension {
         public static ISnakeWebhostBuilder WithMvc(this ISnakeWebhostBuilder builder) {
@@ -11,7 +12,7 @@ namespace Snake.Extensions
         }
     }
 
-    public class MvcPart : ISnakePart
+    public class MvcPart : IApplicationPlugin
     {
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
@@ -23,5 +24,7 @@ namespace Snake.Extensions
         {
             services.AddMvc();
         }
+
+        public void BeforeBuild(IApplicationBuilder app, IHostingEnvironment env, IEnumerable<ServiceDescriptor> services) { }
     }
 }

@@ -10,14 +10,14 @@ namespace Snake.Core
 {
     public interface ISnakeWebhostBuilder
     {
-        ISnakeWebhostBuilder With(Func<ISnakePart> f);
+        ISnakeWebhostBuilder With(Func<IApplicationPlugin> f);
         IWebHost Build(string settingsFile, string assemblyName);
     }
 
-    public class SnakeWebHostBuilder<TSettings> : ISnakeWebhostBuilder where TSettings: SnakeSettings, new()
+    public class SnakeWebHostBuilder<TSettings> : ISnakeWebhostBuilder where TSettings: BaseSettings, new()
     {
         private readonly string[] _args;
-        private List<Func<ISnakePart>> _partsResolvers = new List<Func<ISnakePart>>();
+        private List<Func<IApplicationPlugin>> _pluginResolvers = new List<Func<IApplicationPlugin>>();
         private TSettings _settings = new TSettings();
 
         private SnakeWebHostBuilder(string[] args) {
@@ -28,14 +28,15 @@ namespace Snake.Core
             return new SnakeWebHostBuilder<TSettings>(args);
         }
 
-        public ISnakeWebhostBuilder With(Func<ISnakePart> f)
+        public ISnakeWebhostBuilder With(Func<IApplicationPlugin> f)
         {
-            _partsResolvers.Add(f);
+            _pluginResolvers.Add(f);
             return this;
         }   
         
         public IWebHost Build(string settingsFile, string assemblyName) {
             IHostingEnvironment hostingEnvironment = null;
+            IEnumerable<ServiceDescriptor> services = null;
 
             new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -43,19 +44,27 @@ namespace Snake.Core
                 .Build()
                 .Bind(_settings);
 
-            var parts = _partsResolvers
+            var plugins = _pluginResolvers
                 .Select(pr => pr())
                 .ToList();
 
-            return 
+            return
                 new WebHostBuilder()
                     .UseUrls(_settings.UseUrls)
                     .UseKestrel()
                     .UseIISIntegration()
                     .UseContentRoot(Directory.GetCurrentDirectory())
                     .ConfigureAppConfiguration((hostingContext, config) => hostingEnvironment = hostingContext.HostingEnvironment)
-                    .Configure((app) => parts.ForEach(p => p.Configure(app, hostingEnvironment)))
-                    .ConfigureServices(services => parts.ForEach(p => p.ConfigureServices(services)))
+                    .Configure(app => 
+                    {
+                        plugins.ForEach(p => p.Configure(app, hostingEnvironment));
+                        plugins.ForEach(p => p.BeforeBuild(app, hostingEnvironment, services));
+                    })
+                    .ConfigureServices(serviceCollection =>
+                    {
+                        plugins.ForEach(p => p.ConfigureServices(serviceCollection));
+                        services = serviceCollection;
+                    })
                     .UseSetting(WebHostDefaults.ApplicationKey, assemblyName)
                     .Build();
         }

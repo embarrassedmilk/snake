@@ -4,15 +4,32 @@ using Serilog;
 
 namespace temp.Controllers
 {
+    public interface IValuesRepository
+    {
+        IEnumerable<string> Get();
+    }
+
+    public class ValuesRepository : IValuesRepository
+    {
+        public IEnumerable<string> Get() => new string[] { "1", "2" };
+    }
+
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
-        // GET api/values
+        private readonly IValuesRepository _valuesRepository;
+
+        public ValuesController(IValuesRepository valuesRepository)
+        {
+            _valuesRepository = valuesRepository;
+        }
+
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult Get()
         {
             Log.Logger.Information("test");
-            return new string[] { "value1", "value2" };
+
+            return Ok(_valuesRepository.Get());
         }
     }
 }

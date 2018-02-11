@@ -1,10 +1,14 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Snake.Core;
-using Snake.Extensions;
-using System.Reflection;
-using Snake.Extensions.Serilog;
 using Serilog;
+using Snake.Core;
+using Snake.Extensions.Autofac;
+using Snake.Extensions.Mvc;
+using Snake.Extensions.Serilog;
+using Snake.Extensions.Swagger;
+using Snake.Runner.Bootstrapper;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace snake_runner
 {
@@ -12,19 +16,23 @@ namespace snake_runner
     {
         static void Main(string[] args)
         {
-            var loggerConfiguration = 
-                new LoggerConfiguration()
+            SnakeWebHostBuilder<BaseSettings>
+                .CreateDefaultBuilder(args)
+                .WithSerilog(GetLoggerConfiguration())
+                .WithAutofac(GetModules())
+                .WithSwagger("Dont touch my bread, government")
+                .WithMvc()
+                .Build("appsettings.json", typeof(Program).GetTypeInfo().Assembly.FullName)
+                .Run();
+        }
+
+        private static LoggerConfiguration GetLoggerConfiguration() 
+            => new LoggerConfiguration()
                    .Enrich
                    .FromLogContext()
                    .WriteTo.Console();
 
-            SnakeWebHostBuilder<SnakeSettings>
-                .CreateDefaultBuilder(args)
-                .WithMvc()
-                .WithSerilog(loggerConfiguration)
-                .WithSwagger("Dont touch my bread, government")
-                .Build("appsettings.json", typeof(Program).GetTypeInfo().Assembly.FullName)
-                .Run();
-        }
+        private static IEnumerable<Autofac.Module> GetModules()
+            => new[] { new RunnerBootrstrapper() };
     }
 }
