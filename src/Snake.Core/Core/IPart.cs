@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Snake.Core
 {
-    public interface IPart
+    public interface ISnakePart
     {
         void ConfigureServices(IServiceCollection services);
         void Configure(IApplicationBuilder app, IHostingEnvironment env);

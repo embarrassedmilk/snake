@@ -11,7 +11,7 @@ namespace Snake.Extensions
         }
     }
 
-    public class MvcPart : IPart
+    public class MvcPart : ISnakePart
     {
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {

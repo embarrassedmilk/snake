@@ -12,15 +12,15 @@ namespace Snake.Core
 {
     public interface ISnakeWebhostBuilder
     {
-        ISnakeWebhostBuilder With<T>() where T: IPart, new();
-        ISnakeWebhostBuilder With<T>(Func<T> f) where T: IPart;
+        ISnakeWebhostBuilder With<T>() where T: ISnakePart, new();
+        ISnakeWebhostBuilder With<T>(Func<T> f) where T: ISnakePart;
         IWebHost Build(string settingsFile, string assemblyName);
     }
 
     public class SnakeWebHostBuilder<TSettings> : ISnakeWebhostBuilder where TSettings: SnakeSettings, new()
     {
         private readonly string[] _args;
-        private List<IPart> _parts = new List<IPart>();
+        private List<ISnakePart> _parts = new List<ISnakePart>();
         private TSettings _settings = new TSettings();
 
         private SnakeWebHostBuilder(string[] args) {
@@ -31,13 +31,13 @@ namespace Snake.Core
             return new SnakeWebHostBuilder<TSettings>(args);
         }
 
-        public ISnakeWebhostBuilder With<T>() where T : IPart, new()
+        public ISnakeWebhostBuilder With<T>() where T : ISnakePart, new()
         {
             _parts.Add(new T());
             return this;
         }
 
-        public ISnakeWebhostBuilder With<T>(Func<T> f) where T : IPart
+        public ISnakeWebhostBuilder With<T>(Func<T> f) where T : ISnakePart
         {
             _parts.Add(f());
             return this;

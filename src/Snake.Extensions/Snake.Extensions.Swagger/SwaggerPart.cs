@@ -11,7 +11,7 @@ namespace Snake.Extensions {
         }
     }
 
-    public class SwaggerPart : IPart
+    public class SwaggerPart : ISnakePart
     {
         private readonly string _appName;
 
