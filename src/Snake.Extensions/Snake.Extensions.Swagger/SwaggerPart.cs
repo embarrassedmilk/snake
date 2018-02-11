@@ -7,7 +7,7 @@ using Swashbuckle.AspNetCore.Swagger;
 namespace Snake.Extensions {
     public static class SwaggerExtension {
         public static ISnakeWebhostBuilder WithSwagger(this ISnakeWebhostBuilder builder, string appName) {
-            return builder.With<SwaggerPart>(() => new SwaggerPart(appName));
+            return builder.With(() => new SwaggerPart(appName));
         }
     }
 

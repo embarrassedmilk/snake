@@ -7,7 +7,7 @@ namespace Snake.Extensions
 {
     public static class MvcExtension {
         public static ISnakeWebhostBuilder WithMvc(this ISnakeWebhostBuilder builder) {
-            return builder.With<MvcPart>();
+            return builder.With(() => new MvcPart());
         }
     }
 

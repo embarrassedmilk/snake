@@ -12,15 +12,14 @@ namespace Snake.Core
 {
     public interface ISnakeWebhostBuilder
     {
-        ISnakeWebhostBuilder With<T>() where T: ISnakePart, new();
-        ISnakeWebhostBuilder With<T>(Func<T> f) where T: ISnakePart;
+        ISnakeWebhostBuilder With(Func<ISnakePart> f);
         IWebHost Build(string settingsFile, string assemblyName);
     }
 
     public class SnakeWebHostBuilder<TSettings> : ISnakeWebhostBuilder where TSettings: SnakeSettings, new()
     {
         private readonly string[] _args;
-        private List<ISnakePart> _parts = new List<ISnakePart>();
+        private List<Func<ISnakePart>> _partsResolvers = new List<Func<ISnakePart>>();
         private TSettings _settings = new TSettings();
 
         private SnakeWebHostBuilder(string[] args) {
@@ -31,26 +30,25 @@ namespace Snake.Core
             return new SnakeWebHostBuilder<TSettings>(args);
         }
 
-        public ISnakeWebhostBuilder With<T>() where T : ISnakePart, new()
+        public ISnakeWebhostBuilder With(Func<ISnakePart> f)
         {
-            _parts.Add(new T());
-            return this;
-        }
-
-        public ISnakeWebhostBuilder With<T>(Func<T> f) where T : ISnakePart
-        {
-            _parts.Add(f());
+            _partsResolvers.Add(f);
             return this;
         }   
         
         public IWebHost Build(string settingsFile, string assemblyName) {
+            IHostingEnvironment hostingEnvironment = null;
+
             new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile(settingsFile)
                 .Build()
                 .Bind(_settings);
 
-            IHostingEnvironment hostingEnvironment = null;
+            var parts = _partsResolvers
+                .Select(pr => pr())
+                .ToList();
+
             return 
                 new WebHostBuilder()
                     .UseUrls(_settings.UseUrls)
@@ -58,8 +56,8 @@ namespace Snake.Core
                     .UseIISIntegration()
                     .UseContentRoot(Directory.GetCurrentDirectory())
                     .ConfigureAppConfiguration((hostingContext, config) => hostingEnvironment = hostingContext.HostingEnvironment)
-                    .Configure((app) => _parts.ForEach(p => p.Configure(app, hostingEnvironment)))
-                    .ConfigureServices(services => _parts.ForEach(p => p.ConfigureServices(services)))
+                    .Configure((app) => parts.ForEach(p => p.Configure(app, hostingEnvironment)))
+                    .ConfigureServices(services => parts.ForEach(p => p.ConfigureServices(services)))
                     .UseSetting(WebHostDefaults.ApplicationKey, assemblyName)
                     .Build();
         }
