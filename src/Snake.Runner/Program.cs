@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Autofac;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Snake.Core;
 using Snake.Extensions.Autofac;
@@ -18,15 +20,15 @@ namespace snake_runner
         {
             SnakeWebHostBuilder<BaseSettings>
                 .CreateDefaultBuilder(args)
-                .WithSerilog(GetLoggerConfiguration())
-                .WithAutofac(GetModules())
-                .WithSwagger("Dont touch my bread, government")
+                .WithAutofac(GetModules(), AfterBuild)
                 .WithMvc()
+                .WithSerilog(GetLoggerConfiguration())
+                .WithSwagger("Dont touch my bread, government")
                 .Build("appsettings.json", typeof(Program).GetTypeInfo().Assembly.FullName)
                 .Run();
         }
 
-        private static LoggerConfiguration GetLoggerConfiguration() 
+        private static LoggerConfiguration GetLoggerConfiguration()
             => new LoggerConfiguration()
                    .Enrich
                    .FromLogContext()
@@ -34,5 +36,7 @@ namespace snake_runner
 
         private static IEnumerable<Autofac.Module> GetModules()
             => new[] { new RunnerBootrstrapper() };
+
+        private static void AfterBuild(IContainer container, IApplicationBuilder app, IHostingEnvironment env, IEnumerable<ServiceDescriptor> services) { }
     }
 }

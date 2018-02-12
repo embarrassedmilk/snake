@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Snake.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,19 +12,24 @@ namespace Snake.Extensions.Autofac
 {
     public static class AutofacPartExtension
     {
-        public static ISnakeWebhostBuilder WithAutofac(this ISnakeWebhostBuilder snakeWebhostBuilder, IEnumerable<Module> modules)
+        public static ISnakeWebhostBuilder WithAutofac(
+            this ISnakeWebhostBuilder snakeWebhostBuilder, 
+            IEnumerable<Module> modules, 
+            Action<IContainer, IApplicationBuilder, IHostingEnvironment, IEnumerable<ServiceDescriptor>> afterBuild)
         {
-            return snakeWebhostBuilder.With(() => new AutofacPart(modules));
+            return snakeWebhostBuilder.With(() => new AutofacPart(modules, afterBuild));
         }
     }
 
     public class AutofacPart : IApplicationPlugin
     {
         private readonly IEnumerable<Module> _modules;
+        private readonly Action<IContainer, IApplicationBuilder, IHostingEnvironment, IEnumerable<ServiceDescriptor>> _afterBuildAction;
 
-        public AutofacPart(IEnumerable<Module> modules)
+        public AutofacPart(IEnumerable<Module> modules, Action<IContainer, IApplicationBuilder, IHostingEnvironment, IEnumerable<ServiceDescriptor>> afterBuildAction)
         {
             _modules = modules;
+            _afterBuildAction = afterBuildAction;
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env) { }
@@ -40,6 +46,8 @@ namespace Snake.Extensions.Autofac
             containerBuilder.Populate(services);
             var container = containerBuilder.Build();
             app.ApplicationServices = new AutofacServiceProvider(container);
+
+            _afterBuildAction(container, app, env, services);
         }
     }
 }

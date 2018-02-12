@@ -55,15 +55,15 @@ namespace Snake.Core
                     .UseIISIntegration()
                     .UseContentRoot(Directory.GetCurrentDirectory())
                     .ConfigureAppConfiguration((hostingContext, config) => hostingEnvironment = hostingContext.HostingEnvironment)
-                    .Configure(app => 
-                    {
-                        plugins.ForEach(p => p.Configure(app, hostingEnvironment));
-                        plugins.ForEach(p => p.BeforeBuild(app, hostingEnvironment, services));
-                    })
                     .ConfigureServices(serviceCollection =>
                     {
                         plugins.ForEach(p => p.ConfigureServices(serviceCollection));
                         services = serviceCollection;
+                    })
+                    .Configure(app => 
+                    {
+                        plugins.ForEach(p => p.Configure(app, hostingEnvironment));
+                        plugins.ForEach(p => p.BeforeBuild(app, hostingEnvironment, services));
                     })
                     .UseSetting(WebHostDefaults.ApplicationKey, assemblyName)
                     .Build();
