@@ -15,27 +15,27 @@ before_build:
   - cmd: dotnet restore --verbosity m
 build_script:
   # output will be in ./src/bin/debug/netcoreapp2.0/publish
-  - cmd: dotnet publish ./src/Snake.Core/Snake.Core.csproj
-  - cmd: dotnet publish ./src/Snake.Extensions/Snake.Extensions.Autofac/Snake.Extensions.Autofac.csproj
-  - cmd: dotnet publish ./src/Snake.Extensions/Snake.Extensions.Mvc/Snake.Extensions.Mvc.csproj
-  - cmd: dotnet publish ./src/Snake.Extensions/Snake.Extensions.Serilog/Snake.Extensions.Serilog.csproj
-  - cmd: dotnet publish ./src/Snake.Extensions/Snake.Extensions.Swagger/Snake.Extensions.Swagger.csproj
+  - cmd: dotnet pack ./src/Snake.Core/Snake.Core.csproj
+  - cmd: dotnet pack ./src/Snake.Extensions/Snake.Extensions.Autofac/Snake.Extensions.Autofac.csproj
+  - cmd: dotnet pack ./src/Snake.Extensions/Snake.Extensions.Mvc/Snake.Extensions.Mvc.csproj
+  - cmd: dotnet pack ./src/Snake.Extensions/Snake.Extensions.Serilog/Snake.Extensions.Serilog.csproj
+  - cmd: dotnet pack ./src/Snake.Extensions/Snake.Extensions.Swagger/Snake.Extensions.Swagger.csproj
 # after_build:
   # For once the build has completed
 artifacts:
-  - path: './src/Snake.Core/bin/Debug/netstandard2.0/publish'
+  - path: './src/Snake.Core/bin/Debug/**/*.nupkg'
     name: Snake.Core
     type: Auto
-  - path: './src/Snake.Extensions/Snake.Extensions.Autofac/bin/Debug/netstandard2.0/publish'
+  - path: './src/Snake.Extensions/Snake.Extensions.Autofac/bin/Debug/**/*.nupkg'
     name: Snake.Extensions.Autofac
     type: Auto
-  - path: './src/Snake.Extensions/Snake.Extensions.Mvc/bin/Debug/netstandard2.0/publish'
+  - path: './src/Snake.Extensions/Snake.Extensions.Mvc/bin/Debug/**/*.nupkg'
     name: Snake.Extensions.Mvc
     type: Auto
-  - path: './src/Snake.Extensions/Snake.Extensions.Serilog/bin/Debug/netstandard2.0/publish'
+  - path: './src/Snake.Extensions/Snake.Extensions.Serilog/bin/Debug/**/*.nupkg'
     name: Snake.Extensions.Serilog
     type: Auto
-  - path: './src/Snake.Extensions/Snake.Extensions.Swagger/bin/Debug/netstandard2.0/publish'
+  - path: './src/Snake.Extensions/Snake.Extensions.Swagger/bin/Debug/**/*.nupkg'
     name: Snake.Extensions.Swagger
     type: Auto
 clone_depth: 1
