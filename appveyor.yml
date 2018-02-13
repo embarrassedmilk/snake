@@ -21,6 +21,10 @@ build_script:
   - cmd: dotnet pack ./src/Snake.Extensions/Snake.Extensions.Serilog/Snake.Extensions.Serilog.csproj
   - cmd: dotnet pack ./src/Snake.Extensions/Snake.Extensions.Swagger/Snake.Extensions.Swagger.csproj
   - cmd: appveyor PushArtifact ./src/Snake.Core/bin/Debug/Snake.Core.1.0.0.nupkg
+  - cmd: appveyor PushArtifact ./src/Snake.Extensions/Snake.Extensions.Autofac/bin/Debug/Snake.Extensions.Autofac.1.0.0.nupkg
+  - cmd: appveyor PushArtifact ./src/Snake.Extensions/Snake.Extensions.Mvc/bin/Debug/Snake.Extensions.Mvc.1.0.0.nupkg
+  - cmd: appveyor PushArtifact ./src/Snake.Extensions/Snake.Extensions.Serilog/bin/Debug/Snake.Extensions.Serilog.1.0.0.nupkg
+  - cmd: appveyor PushArtifact ./src/Snake.Extensions/Snake.Extensions.Swagger/bin/Debug/Snake.Extensions.Swagger.1.0.0.nupkg
 # after_build:
   # For once the build has completed
 # artifacts:
