@@ -22,22 +22,22 @@ build_script:
   - cmd: dotnet pack ./src/Snake.Extensions/Snake.Extensions.Swagger/Snake.Extensions.Swagger.csproj
 # after_build:
   # For once the build has completed
-artifacts:
-  - path: './src/Snake.Core/bin/Debug/**/*.nupkg'
-    name: Snake.Core
-    type: Auto
-  - path: './src/Snake.Extensions/Snake.Extensions.Autofac/bin/Debug/**/*.nupkg'
-    name: Snake.Extensions.Autofac
-    type: Auto
-  - path: './src/Snake.Extensions/Snake.Extensions.Mvc/bin/Debug/**/*.nupkg'
-    name: Snake.Extensions.Mvc
-    type: Auto
-  - path: './src/Snake.Extensions/Snake.Extensions.Serilog/bin/Debug/**/*.nupkg'
-    name: Snake.Extensions.Serilog
-    type: Auto
-  - path: './src/Snake.Extensions/Snake.Extensions.Swagger/bin/Debug/**/*.nupkg'
-    name: Snake.Extensions.Swagger
-    type: Auto
+# artifacts:
+#   - path: './src/Snake.Core/bin/Debug/**/*.nupkg'
+#     name: Snake.Core
+#     type: Auto
+#   - path: './src/Snake.Extensions/Snake.Extensions.Autofac/bin/Debug/**/*.nupkg'
+#     name: Snake.Extensions.Autofac
+#     type: Auto
+#   - path: './src/Snake.Extensions/Snake.Extensions.Mvc/bin/Debug/**/*.nupkg'
+#     name: Snake.Extensions.Mvc
+#     type: Auto
+#   - path: './src/Snake.Extensions/Snake.Extensions.Serilog/bin/Debug/**/*.nupkg'
+#     name: Snake.Extensions.Serilog
+#     type: Auto
+#   - path: './src/Snake.Extensions/Snake.Extensions.Swagger/bin/Debug/**/*.nupkg'
+#     name: Snake.Extensions.Swagger
+#     type: Auto
 clone_depth: 1
 # test_script:
 #   # restore packages for our unit tests
@@ -47,4 +47,10 @@ clone_depth: 1
 #   - cmd: dotnet xunit
 on_finish :
  - cmd: appveyor PushArtifact ./src/Snake.Core/bin/Debug/Snake.Core.1.0.0.nupkg
-deploy: off
+deploy:
+  provider: NuGet
+  api_key:
+    secure: Pr85YtvKtnrh7tWYGq3ALBLsfUPowAmbMmBxfuSI6eQwxgDTCeqm+o5Gy8fDYj0Z
+  skip_symbols: false
+  symbol_server:           # remove to push symbols to SymbolSource.org
+  artifact: /.*\.nupkg/
