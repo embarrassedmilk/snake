@@ -46,5 +46,5 @@ clone_depth: 1
 #   - cmd: cd tests
 #   - cmd: dotnet xunit
 on_finish :
- - cmd: appveyor PushArtifact Snake.Core
+ - cmd: appveyor PushArtifact ./src/Snake.Core/bin/Debug/Snake.Core.1.0.0.nupkg
 deploy: off
