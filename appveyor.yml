@@ -20,6 +20,7 @@ build_script:
   - cmd: dotnet pack ./src/Snake.Extensions/Snake.Extensions.Mvc/Snake.Extensions.Mvc.csproj
   - cmd: dotnet pack ./src/Snake.Extensions/Snake.Extensions.Serilog/Snake.Extensions.Serilog.csproj
   - cmd: dotnet pack ./src/Snake.Extensions/Snake.Extensions.Swagger/Snake.Extensions.Swagger.csproj
+  - cmd: appveyor PushArtifact ./src/Snake.Core/bin/Debug/Snake.Core.1.0.0.nupkg
 # after_build:
   # For once the build has completed
 # artifacts:
@@ -45,8 +46,7 @@ clone_depth: 1
 #   # run the unit tests (requires changing into the test directory)
 #   - cmd: cd tests
 #   - cmd: dotnet xunit
-on_finish :
- - cmd: appveyor PushArtifact ./src/Snake.Core/bin/Debug/Snake.Core.1.0.0.nupkg
+# on_finish :
 deploy:
   provider: NuGet
   api_key:
