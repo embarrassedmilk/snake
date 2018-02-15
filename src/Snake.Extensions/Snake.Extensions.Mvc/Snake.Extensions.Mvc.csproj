@@ -15,4 +15,13 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.0.0" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <version>1.0.1</version>
+    <authors>Valerii Matveev</authors>
+    <owners>Valerii Matveev</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/embarrassedmilk/snake</projectUrl>
+    <description>Extension for setting up Mvc in your Snake app</description>
+  </PropertyGroup>
 </Project>

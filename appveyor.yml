@@ -8,41 +8,24 @@ init:
   - cmd: git config --global core.autocrlf true
 install:
   # Install repo specific stuff here
+configuration:
+  - Release
 before_build:
   # Display .NET Core version
   - cmd: dotnet --version
   # Display minimal restore text
   - cmd: dotnet restore --verbosity m
 build_script:
-  # output will be in ./src/bin/debug/netcoreapp2.0/publish
   - cmd: dotnet pack ./src/Snake.Core/Snake.Core.csproj
   - cmd: dotnet pack ./src/Snake.Extensions/Snake.Extensions.Autofac/Snake.Extensions.Autofac.csproj
   - cmd: dotnet pack ./src/Snake.Extensions/Snake.Extensions.Mvc/Snake.Extensions.Mvc.csproj
   - cmd: dotnet pack ./src/Snake.Extensions/Snake.Extensions.Serilog/Snake.Extensions.Serilog.csproj
   - cmd: dotnet pack ./src/Snake.Extensions/Snake.Extensions.Swagger/Snake.Extensions.Swagger.csproj
-  - cmd: appveyor PushArtifact ./src/Snake.Core/bin/Debug/Snake.Core.1.0.0.nupkg
-  - cmd: appveyor PushArtifact ./src/Snake.Extensions/Snake.Extensions.Autofac/bin/Debug/Snake.Extensions.Autofac.1.0.0.nupkg
-  - cmd: appveyor PushArtifact ./src/Snake.Extensions/Snake.Extensions.Mvc/bin/Debug/Snake.Extensions.Mvc.1.0.0.nupkg
-  - cmd: appveyor PushArtifact ./src/Snake.Extensions/Snake.Extensions.Serilog/bin/Debug/Snake.Extensions.Serilog.1.0.0.nupkg
-  - cmd: appveyor PushArtifact ./src/Snake.Extensions/Snake.Extensions.Swagger/bin/Debug/Snake.Extensions.Swagger.1.0.0.nupkg
-# after_build:
-  # For once the build has completed
-# artifacts:
-#   - path: './src/Snake.Core/bin/Debug/**/*.nupkg'
-#     name: Snake.Core
-#     type: Auto
-#   - path: './src/Snake.Extensions/Snake.Extensions.Autofac/bin/Debug/**/*.nupkg'
-#     name: Snake.Extensions.Autofac
-#     type: Auto
-#   - path: './src/Snake.Extensions/Snake.Extensions.Mvc/bin/Debug/**/*.nupkg'
-#     name: Snake.Extensions.Mvc
-#     type: Auto
-#   - path: './src/Snake.Extensions/Snake.Extensions.Serilog/bin/Debug/**/*.nupkg'
-#     name: Snake.Extensions.Serilog
-#     type: Auto
-#   - path: './src/Snake.Extensions/Snake.Extensions.Swagger/bin/Debug/**/*.nupkg'
-#     name: Snake.Extensions.Swagger
-#     type: Auto
+  - cmd: appveyor PushArtifact ./src/Snake.Core/bin/Release/Snake.Core.1.0.1.nupkg
+  - cmd: appveyor PushArtifact ./src/Snake.Extensions/Snake.Extensions.Autofac/bin/Release/Snake.Extensions.Autofac.1.0.1.nupkg
+  - cmd: appveyor PushArtifact ./src/Snake.Extensions/Snake.Extensions.Mvc/bin/Release/Snake.Extensions.Mvc.1.0.1.nupkg
+  - cmd: appveyor PushArtifact ./src/Snake.Extensions/Snake.Extensions.Serilog/bin/Release/Snake.Extensions.Serilog.1.0.1.nupkg
+  - cmd: appveyor PushArtifact ./src/Snake.Extensions/Snake.Extensions.Swagger/bin/Release/Snake.Extensions.Swagger.1.0.1.nupkg
 clone_depth: 1
 # test_script:
 #   # restore packages for our unit tests
