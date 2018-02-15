@@ -16,12 +16,13 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <authors>Valerii Matveev</authors>
     <owners>Valerii Matveev</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
-    <projectUrl>https://github.com/embarrassedmilk/snake</projectUrl>
+    <PackageLicenseUrl>https://github.com/embarrassedmilk/snake/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/embarrassedmilk/snake</PackageProjectUrl>
+    <PackageTags>C#, webappbuilder</PackageTags>
     <description>Extension for setting up Mvc in your Snake app</description>
   </PropertyGroup>
 </Project>
