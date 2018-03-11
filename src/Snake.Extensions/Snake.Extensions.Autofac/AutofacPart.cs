@@ -12,12 +12,12 @@ namespace Snake.Extensions.Autofac
 {
     public static class AutofacPartExtension
     {
-        public static ISnakeWebhostBuilder WithAutofac(
-            this ISnakeWebhostBuilder snakeWebhostBuilder, 
+        public static ISnakeWebhostBuilder<TSettings> WithAutofac<TSettings>(
+            this ISnakeWebhostBuilder<TSettings> snakeWebhostBuilder, 
             IEnumerable<Module> modules, 
-            Action<IContainer, IApplicationBuilder, IHostingEnvironment, IEnumerable<ServiceDescriptor>> afterBuild)
+            Action<IContainer, IApplicationBuilder, IHostingEnvironment, IEnumerable<ServiceDescriptor>> afterBuild) where TSettings : BaseSettings, new()
         {
-            return snakeWebhostBuilder.With(() => new AutofacPart(modules, afterBuild));
+            return snakeWebhostBuilder.With((_) => new AutofacPart(modules, afterBuild));
         }
     }
 

@@ -8,8 +8,10 @@ using System.Collections.Generic;
 namespace Snake.Extensions.Swagger
 {
     public static class SwaggerExtension {
-        public static ISnakeWebhostBuilder WithSwagger(this ISnakeWebhostBuilder builder, string appName) {
-            return builder.With(() => new SwaggerPart(appName));
+        public static ISnakeWebhostBuilder<TSettings> WithSwagger<TSettings>(this ISnakeWebhostBuilder<TSettings> builder, string appName)
+             where TSettings : BaseSettings, new()
+        {
+            return builder.With((_) => new SwaggerPart(appName));
         }
     }
 

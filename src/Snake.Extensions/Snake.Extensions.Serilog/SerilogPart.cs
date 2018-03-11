@@ -9,10 +9,11 @@ namespace Snake.Extensions.Serilog
 {
     public static class SerilogPartExtension
     {
-        public static ISnakeWebhostBuilder WithSerilog(this ISnakeWebhostBuilder snakeWebhostBuilder, LoggerConfiguration loggerConfiguration)
+        public static ISnakeWebhostBuilder<TSettings> WithSerilog<TSettings>(this ISnakeWebhostBuilder<TSettings> snakeWebhostBuilder, LoggerConfiguration loggerConfiguration) 
+            where TSettings : BaseSettings, new()
         {
-            return snakeWebhostBuilder.With(() => new SerilogPart(loggerConfiguration));
-        } 
+            return snakeWebhostBuilder.With((_) => new SerilogPart(loggerConfiguration));
+        }
     }
 
     public class SerilogPart : IApplicationPlugin

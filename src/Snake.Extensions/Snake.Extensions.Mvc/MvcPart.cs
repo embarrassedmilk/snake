@@ -7,8 +7,9 @@ using System.Collections.Generic;
 namespace Snake.Extensions.Mvc
 {
     public static class MvcExtension {
-        public static ISnakeWebhostBuilder WithMvc(this ISnakeWebhostBuilder builder) {
-            return builder.With(() => new MvcPart());
+        public static ISnakeWebhostBuilder<TSettings> WithMvc<TSettings>(this ISnakeWebhostBuilder<TSettings> builder) where TSettings : BaseSettings, new()
+        {
+            return builder.With((_) => new MvcPart());
         }
     }
 

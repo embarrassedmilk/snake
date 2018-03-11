@@ -8,27 +8,27 @@ using System.IO;
 
 namespace Snake.Core
 {
-    public interface ISnakeWebhostBuilder
+    public interface ISnakeWebhostBuilder<TSettings> where TSettings : BaseSettings, new()
     {
-        ISnakeWebhostBuilder With(Func<IApplicationPlugin> f);
+        ISnakeWebhostBuilder<TSettings> With(Func<TSettings, IApplicationPlugin> f);
         IWebHost Build(string settingsFile, string assemblyName);
     }
 
-    public class SnakeWebHostBuilder<TSettings> : ISnakeWebhostBuilder where TSettings: BaseSettings, new()
+    public class SnakeWebHostBuilder<TSettings> : ISnakeWebhostBuilder<TSettings> where TSettings: BaseSettings, new()
     {
         private readonly string[] _args;
-        private List<Func<IApplicationPlugin>> _pluginResolvers = new List<Func<IApplicationPlugin>>();
+        private List<Func<TSettings, IApplicationPlugin>> _pluginResolvers = new List<Func<TSettings, IApplicationPlugin>>();
         private TSettings _settings = new TSettings();
 
         private SnakeWebHostBuilder(string[] args) {
             _args = args;
         }
 
-        public static ISnakeWebhostBuilder CreateDefaultBuilder(string[] args) {
+        public static ISnakeWebhostBuilder<TSettings> CreateDefaultBuilder(string[] args) {
             return new SnakeWebHostBuilder<TSettings>(args);
         }
 
-        public ISnakeWebhostBuilder With(Func<IApplicationPlugin> f)
+        public ISnakeWebhostBuilder<TSettings> With(Func<TSettings, IApplicationPlugin> f)
         {
             _pluginResolvers.Add(f);
             return this;
@@ -45,7 +45,7 @@ namespace Snake.Core
                 .Bind(_settings);
 
             var plugins = _pluginResolvers
-                .Select(pr => pr())
+                .Select(pr => pr(_settings))
                 .ToList();
 
             return
